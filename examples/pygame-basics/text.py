@@ -1,34 +1,23 @@
-import sys
 import pygame
 
-# Initialize pygame so it runs in the background and manages things
 pygame.init()
+pygame.display.set_caption('Crash!')
+window = pygame.display.set_mode((300, 300))
+running = True
 
-# Create a font object
-font = pygame.font.SysFont("Arial", 50)
-# Create text using the font
-text = font.render("Hello", True, (200,0,255))
-
-
-# Create a display. Size must be a tuple, which is why it's in parentheses
-screen = pygame.display.set_mode( (200, 150) )
-
-# fill the screen with white
-screen.fill( (255,255,255) )
-# draw text to screen
-screen.blit(text, (20, 20) )
-# update the display
-pygame.display.flip()
-
-# Main loop. Your game would go inside this loop
-while True:
-    # do something for each event in the event queue (list of things that happen)
+# Draw Once
+Rectplace = pygame.draw.rect(window, (255, 0, 0),(100, 100, 100, 100))
+pygame.display.update()
+# Main Loop
+while running:
+    # Mouse position and button clicking.
+    pos = pygame.mouse.get_pos()
+    pressed1, pressed2, pressed3 = pygame.mouse.get_pressed()
+    # Check if the rect collided with the mouse pos
+    # and if the left mouse button was pressed.
+    if Rectplace.collidepoint(pos) and pressed1:
+        print("You have opened a chest!")
+    # Quit pygame.
     for event in pygame.event.get():
-
-        # This line will print each event to the terminal
-        print(event)
-
-        # Check to see if the current event is a QUIT event
         if event.type == pygame.QUIT:
-            # If so, exit the program
-            sys.exit()
+            running = False
