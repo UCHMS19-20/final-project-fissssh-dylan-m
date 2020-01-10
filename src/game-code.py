@@ -23,15 +23,16 @@ Y = 340
 # of specific dimension..e(X, Y).
 pygame.display.set_mode((X, Y ))
 display_surface = pygame.display.set_mode((X, Y )) 
-clock= pygame.time.Clock()
+
 
 # set the pygame window name 
-pygame.display.set_caption('Title Screen') 
+pygame.display.set_caption('Fishing Simulator') 
   
 # create a surface object, image is drawn on it. 
 image = pygame.image.load(r'C:\Users\dmccann\Documents\Final Project Babyy\final-project-fissssh-dylan-m\src\img\Test_Opening.png') 
 image2 = pygame.image.load(r'C:\Users\dmccann\Documents\Final Project Babyy\final-project-fissssh-dylan-m\src\img\FishingMan.jpg')
 fish1 = pygame.image.load(r'C:\Users\dmccann\Documents\Final Project Babyy\final-project-fissssh-dylan-m\src\img\Fish1.png')
+Fish1_Small = pygame.transform.scale(fish1, (50, 50))
 
 def things(thingx, thingy, thingw, thingh, color):
     pygame.draw.rect(gameDisplay, color, [thingx, thingy, thingw, thingh])
@@ -71,28 +72,35 @@ while not done and display_intro:
          pygame.display.update()
 
 enemies = []
-spawn_counter = 30
+fish1_event = pygame.USEREVENT + 1
+x = random.randint(3000,6000)
+pygame.time.set_timer(fish1_event, x)
+fishreact = 1000
  
 
 # infinite loop 
 while True : 
     # iterate over the list of Event objects 
-    # that was returned by pygame.event.get() method.   
+    # that was returned by pygame.event.get() method.
+    clock= pygame.time.Clock()   
     display_surface = pygame.display.set_mode((1000, 670 ))
     display_surface.blit(image2, (0, 0))
     print(event)
     for event in pygame.event.get() : 
         # Spawn enemies if counter <= 0 then reset it.
-        spawn_counter -= 1
-        if spawn_counter <= 0:
-            # Append an enemy rect. You can pass the position directly as an argument.
-            enemies.append(fish1.get_rect(topleft=(random.randrange(600), 0)))
-            spawn_counter = 30
-        
+        if event.type == fish1_event:
+            enemies.append(Fish1_Small.get_rect(topleft=(random.randrange(600), 400)))
+            if event.type == pygame.K_SPACE in fishreact:
+                pygame.quit() 
+                sys.exit()
+            # else:
+            #     fish dissappears and more fish can spawn again
+              
         for enemy_rect in enemies:
-            display_surface.blit(fish1, enemy_rect)
+            display_surface.blit(Fish1_Small, enemy_rect)
         pygame.display.flip()
         pygame.display.update()
+        clock.tick(30)
         
 
         # if event object type is QUIT 
