@@ -11,7 +11,10 @@ This is a chill game to destress from the pressure of midterms. Their is no win 
   Game
       When you see a fish, press spacebar to catch it!
         Blue Fish need 1 press while Red Fish need 5. 
-   
+    
+# Flowchart 
+*Insert Flowchart Here*
 
-
-
+# Sources
+This is how I learned to do time stuff - https://www.pygame.org/docs/ref/time.html
+I looked at this Stack Overflow to understand spawning enemies and see an example of a fully working game - https://stackoverflow.com/questions/43691411/how-do-i-add-enemies-in-pygame
