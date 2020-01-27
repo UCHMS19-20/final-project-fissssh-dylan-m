@@ -1,5 +1,5 @@
 # import pygame module in this program 
-import pygame 
+import pygame
 import time
 import random
   
@@ -21,46 +21,49 @@ Y = 340
   
 # create the display surface object 
 # of specific dimension..e(X, Y).
-pygame.display.set_mode((X, Y ))
 display_surface = pygame.display.set_mode((X, Y )) 
 
+#time
+clock = pygame.time.Clock()   
 
 # set the pygame window name 
 pygame.display.set_caption('Fishing Simulator') 
   
-# create a surface object, image is drawn on it. 
-image = pygame.image.load(r'C:\Users\dmccann\Documents\Final Project Babyy\final-project-fissssh-dylan-m\src\img\Test_Opening.png') 
-image2 = pygame.image.load(r'C:\Users\dmccann\Documents\Final Project Babyy\final-project-fissssh-dylan-m\src\img\FishingMan.jpg')
-fish1 = pygame.image.load(r'C:\Users\dmccann\Documents\Final Project Babyy\final-project-fissssh-dylan-m\src\img\Fish1.png')
+# setting images and sizes of those images
+image = pygame.image.load(r'src\img\Test_Opening.png') 
+image2 = pygame.image.load(r'src\img\FishingMan.jpg')
+fish1 = pygame.image.load(r'src\img\Fish1.png')
+fish2 = pygame.image.load(r'src\img\Fish2.png')
+nice = pygame.image.load(r'src\img\nice-catch.jpg')
+fail = pygame.image.load(r'src\img\Fail.jpg')
+fail_small = pygame.transform.scale(fail, (100, 100))
 Fish1_Small = pygame.transform.scale(fish1, (50, 50))
-
-def things(thingx, thingy, thingw, thingh, color):
-    pygame.draw.rect(gameDisplay, color, [thingx, thingy, thingw, thingh])
-    gameDisplay.blit(fish1,(x,y))
-
+Fish2_Small = pygame.transform.scale(fish2, (50, 50))
 
 done = False
 intro_page = 1
-display_intro = True
 
-class fish(object):
-    
+class Fish:
+    def __init__(self, time, clicks):
+        self.t = time
+        self.c = clicks
 
-    def __init__(self,x,y,width,height,end):
-        self.x = random.randint(0, display_width)
-        self.y = random.randint(0, display_height)
-        self.width = width
-        self.height = height
-        self.end= end
-                
-while not done and display_intro:
+x = random.randint(3000,6000)
+y = random.randint(7000,11000)
+blue = Fish(x, 10)    
+red = Fish(y, 20)    
+
+
+while not done:
     for event in pygame.event.get(): # User did something
         if event.type == pygame.QUIT: # If user clicked close
-            done = True # Flag that we are done so we exit this loop
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            intro_page += 1  
-        if intro_page == 2:
-                display_intro = False  
+            pygame.quit() 
+            quit()
+            # Quit the program
+        pressed = pygame.key.get_pressed()
+        if pressed[pygame.K_SPACE]:# If user clicked space
+            done = True
+            #leave the intro page and go to the main game loop          
     if intro_page == 1:
          # completely fill the surface object 
          # with white colour 
@@ -72,46 +75,67 @@ while not done and display_intro:
          pygame.display.update()
 
 enemies = []
+catches = 0
+bro = 0
 fish1_event = pygame.USEREVENT + 1
-x = random.randint(3000,6000)
-pygame.time.set_timer(fish1_event, x)
-fishreact = 1000
- 
+a = 1
+
+pygame.time.set_timer(fish1_event, blue.t)
+
 
 # infinite loop 
 while True : 
     # iterate over the list of Event objects 
     # that was returned by pygame.event.get() method.
-    clock= pygame.time.Clock()   
     display_surface = pygame.display.set_mode((1000, 670 ))
     display_surface.blit(image2, (0, 0))
-    print(event)
-    for event in pygame.event.get() : 
-        # Spawn enemies if counter <= 0 then reset it.
+    
+    for event in pygame.event.get(): 
+        
+        pressed = pygame.key.get_pressed()
+        
         if event.type == fish1_event:
-            enemies.append(Fish1_Small.get_rect(topleft=(random.randrange(600), 400)))
-            if event.type == pygame.K_SPACE in fishreact:
-                pygame.quit() 
-                sys.exit()
-            # else:
-            #     fish dissappears and more fish can spawn again
-              
-        for enemy_rect in enemies:
-            display_surface.blit(Fish1_Small, enemy_rect)
+            if random.choice([0,3]) != 0:
+                bruh = Fish1_Small.get_rect(topleft=(random.randrange(600), 400))
+                cool = Fish1_Small
+                a = 1
+            else: 
+                bruh = Fish2_Small.get_rect(topleft=(random.randrange(600), 400))
+                cool = Fish2_Small
+                a = 5
+            enemies.append(bruh)
+            print(enemies)
+        if pressed[pygame.K_SPACE] and len(enemies) >= 1:
+            bro = bro + 1
+        if  bro == a:
+            enemies.remove(bruh)
+            display_surface.blit(nice, (358, 170))
+            catches = catches + 1
+            pygame.display.update()
+            print(catches)
+            bro = 0
+            time.sleep(2)
+        if len(enemies) > 1:
+            display_surface.blit(fail_small, (358, 170))
+            time.sleep(3)
+            enemies.clear()
+        for bruh in enemies:
+            display_surface.blit(cool, bruh)
+            
+    
+
         pygame.display.flip()
         pygame.display.update()
-        clock.tick(30)
+        clock.tick(1000)
         
 
         # if event object type is QUIT 
         # then quitting the pygame 
         # and program both. 
         if event.type == pygame.QUIT : 
-  
             # deactivates the pygame library 
             pygame.quit() 
-  
             # quit the program. 
             quit() 
   
-        # Draws the surface object to the screen. 
+

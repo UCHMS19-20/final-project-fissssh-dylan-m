@@ -1,0 +1,7 @@
+every random amount of seconds a random fish spawns
+when that fish spawns, the player has that fishes reaction time to press space
+    if the player presses space in time: 
+        the fish dissapears and it says you got blank fish
+    if the player does not press space in time:
+        the fish dissapears and the text says it got away
+once the fishes reaction time is done loop back to the beginning
