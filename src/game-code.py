@@ -43,11 +43,13 @@ Fish2_Small = pygame.transform.scale(fish2, (50, 50))
 done = False
 intro_page = 1
 
+#class for the different types of fish
 class Fish:
     def __init__(self, time, clicks):
         self.t = time
         self.c = clicks
 
+#types of fish and info
 x = random.randint(3000,6000)
 y = random.randint(7000,11000)
 blue = Fish(x, 10)    
@@ -74,12 +76,14 @@ while not done:
          display_surface.blit(image, (0, 0)) 
          pygame.display.update()
 
+#just variables y'know
 enemies = []
 catches = 0
 bro = 0
 fish1_event = pygame.USEREVENT + 1
 a = 1
 
+#fish spawn timer
 pygame.time.set_timer(fish1_event, blue.t)
 
 
@@ -92,9 +96,11 @@ while True :
     
     for event in pygame.event.get(): 
         
+        #getting keys pressed
         pressed = pygame.key.get_pressed()
         
         if event.type == fish1_event:
+            #when timer hits, percent chance to get one of the types of fish
             if random.choice([0,3]) != 0:
                 bruh = Fish1_Small.get_rect(topleft=(random.randrange(600), 400))
                 cool = Fish1_Small
@@ -103,10 +109,13 @@ while True :
                 bruh = Fish2_Small.get_rect(topleft=(random.randrange(600), 400))
                 cool = Fish2_Small
                 a = 5
+            #add fish to enemies list
             enemies.append(bruh)
-            print(enemies)
+            # print(enemies)
+        # measures amount of space key presses while fish is spawned
         if pressed[pygame.K_SPACE] and len(enemies) >= 1:
             bro = bro + 1
+        # once space bar pressed enough times, the fish is removed, it congragulates you, and resets it
         if  bro == a:
             enemies.remove(bruh)
             display_surface.blit(nice, (358, 170))
@@ -115,6 +124,7 @@ while True :
             print(catches)
             bro = 0
             time.sleep(2)
+        #if cant catch the fish in time, shows fail screen
         if len(enemies) > 1:
             display_surface.blit(fail_small, (358, 170))
             time.sleep(3)
@@ -123,7 +133,7 @@ while True :
             display_surface.blit(cool, bruh)
             
     
-
+        #just updating the visuals and time
         pygame.display.flip()
         pygame.display.update()
         clock.tick(1000)
