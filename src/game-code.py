@@ -5,6 +5,7 @@ import random
   
 
 pygame.mixer.pre_init(44100,16,2,4096)
+
 # activate the pygame library . 
 # initiate pygame and give permission 
 # to use pygame's functionality. 
@@ -14,8 +15,7 @@ pygame.init()
 # for white colour 
 black = (0, 0, 0)
 white = (255, 255, 255)
-green = (0, 255, 0)
-red = (255, 0, 0)
+
   
 # assigning values to X and Y variable 
 X = 1000
@@ -43,14 +43,16 @@ fail_small = pygame.transform.scale(fail, (200, 200))
 Fish1_Small = pygame.transform.scale(fish1, (150, 100))
 Fish2_Small = pygame.transform.scale(fish2, (100, 100))
 
+#setting font size
 smallfont = pygame.font.SysFont("times new roman", 40)
 
+# music loads, volume, and infinitely plays
 pygame.mixer.music.load('src\Music.mp3')
 pygame.mixer.music.set_volume(.5)
 pygame.mixer.music.play(-1)
 
 done = False
-intro_page = 1
+
 
 #class for the different types of fish
 class Fish:
@@ -64,34 +66,7 @@ y = random.randint(10000,15000)
 blue = Fish(x, 10)    
 red = Fish(y, 20)    
 
-
-def score(score):
-    text = smallfont.render("Number of Fish Caught: "+ str(score), True, black)
-    display_surface.blit(text, [0,0])
-
-
-
-while not done:
-    for event in pygame.event.get(): # User did something
-        if event.type == pygame.QUIT: # If user clicked close
-            pygame.quit() 
-            quit()
-            # Quit the program
-        pressed = pygame.key.get_pressed()
-        if pressed[pygame.K_SPACE]:# If user clicked space
-            done = True
-            #leave the intro page and go to the main game loop          
-    if intro_page == 1:
-         # completely fill the surface object 
-         # with white colour 
-         display_surface.fill(white) 
-         
-         # copying the image surface object 
-         # to the display surface object at (0, 0) coordinate. 
-         display_surface.blit(image, (0, 0)) 
-         pygame.display.update()
-
-#just variables y'know
+#variables for the main game loop
 enemies = []
 catches = 0
 bro = 0
@@ -101,12 +76,38 @@ a = 1
 #fish spawn timer
 pygame.time.set_timer(fish1_event, blue.t)
 
+#score board function
+def score(score):
+    text = smallfont.render("Number of Fish Caught: "+ str(score), True, black)
+    display_surface.blit(text, [0,0])
+
+
+#intro page loop
+while not done:
+    # completely fill the surface object 
+    # with white colour 
+    display_surface.fill(white) 
+         
+    # copying the image surface object 
+    # to the display surface object at (0, 0) coordinate. 
+    display_surface.blit(image, (0, 0)) 
+    pygame.display.update()
+    for event in pygame.event.get(): # User did something
+        if event.type == pygame.QUIT: # If user clicked close
+            pygame.quit() 
+            quit()
+            # Quit the program
+        pressed = pygame.key.get_pressed()
+        if pressed[pygame.K_SPACE]:# If user clicked space
+            done = True
+            #leave the intro page and go to the main game loop          
 
 # infinite loop 
 while True : 
     # iterate over the list of Event objects 
     # that was returned by pygame.event.get() method.
-    display_surface = pygame.display.set_mode((1000, 670 ))
+
+    #sets background, updates score
     display_surface.blit(image2, (0, 0))
     score(catches)
     for event in pygame.event.get(): 
@@ -120,19 +121,21 @@ while True :
                 bruh = Fish1_Small.get_rect(topleft=(random.randrange(600), 400))
                 cool = Fish1_Small
                 a = 1
-                # 15 for challenging
+                # a = 15 for challenging
             else: 
                 bruh = Fish2_Small.get_rect(topleft=(random.randrange(600), 400))
                 cool = Fish2_Small
                 a = 10
-                #30 for challenge
+                # a = 30 for challenge
             #add fish to enemies list
             enemies.append(bruh)
             # print(enemies)
+
         # measures amount of space key presses while fish is spawned
         if pressed[pygame.K_SPACE] and len(enemies) == 1:
             bro = bro + 1
-        # once space bar pressed enough times, the fish is removed, it congragulates you, and resets it
+        
+        # once space bar pressed enough times, the fish is removed, it congragulates you, adds 1 to score, and resets space presses
         if  bro == a:
             enemies.remove(bruh)
             display_surface.blit(nice, (358, 170))
@@ -153,9 +156,8 @@ while True :
     
         #just updating the visuals and time
         pygame.display.flip()
-        
         pygame.display.update()
-        clock.tick(1000)
+        
         
 
         # if event object type is QUIT 
